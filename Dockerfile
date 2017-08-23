@@ -1,4 +1,4 @@
-ROM rallyforge/rally:latest
+FROM rallyforge/rally:latest
 MAINTAINER Nikolay Pliashechnykov <npliashechnikov@mirantis.com>
 
 WORKDIR /var/lib
