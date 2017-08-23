@@ -37,6 +37,8 @@ File task_arguments.yaml contains all task options:
 +------------------------+----------------------------------------------------+
 | flavor_name            | Flavor name that exist in cloud                    |
 +------------------------+----------------------------------------------------+
+| net_id                 | ID of a shared network to be used                  |
++------------------------+----------------------------------------------------+
 | glance_image_location  | URL of image that is used to test Glance upload    |
 +------------------------+----------------------------------------------------+
 | users_amount           | Expected amount of users                           |

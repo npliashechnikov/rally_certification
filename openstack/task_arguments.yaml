@@ -1,20 +1,16 @@
 ---
   service_list:
-    - authentication
-    - nova
-    - neutron
-    - keystone
-    - cinder
-    - glance
+    - cert
   use_existing_users: false
-  image_name: "^(cirros.*-disk|TestVM)$"
+  image_name: "TestVM"
   flavor_name: "m1.tiny"
+  net_id: "1111-111111111-11111111-1111-1111-1111"
   glance_image_location: ""
   smoke: true
   users_amount: 1
   tenants_amount: 1
   controllers_amount: 3
-  compute_amount: 77
-  storage_amount: 20
-  network_amount: 1
+  compute_amount: 10
+  storage_amount: 2
+  network_amount: 3
 

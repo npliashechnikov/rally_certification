@@ -2,7 +2,7 @@
 {%- set image_name = image_name|default("^(cirros.*-disk|TestVM)$") %}
 {%- set flavor_name = flavor_name|default("m1.tiny") %}
 {%- set use_existing_users = use_existing_users|default(false) %}
-{%- set service_list = service_list|default(["authentication", "cinder", "keystone", "nova", "glance", "neutron"]) %}
+{%- set service_list = service_list|default(["authentication", "cert", "cinder", "keystone", "nova", "glance", "neutron"]) %}
 {%- set smoke = smoke|default(true) %}
 {%- set controllers_amount = controllers_amount|default(1) %}
 {%- if smoke %}
@@ -23,6 +23,10 @@
 
 {% if "cinder" in service_list %}
 {%- include "scenario/cinder.yaml"-%}
+{% endif %}
+
+{% if "cert" in service_list %}
+{%- include "scenario/cert.yaml"-%}
 {% endif %}
 
 {% if "keystone" in service_list %}

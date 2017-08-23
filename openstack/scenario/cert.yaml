@@ -1,0 +1,139 @@
+---
+  NovaServers.boot_and_live_migrate_server:
+    - 
+      args:
+        {{vm_params(image_name, flavor_name) }}
+        nics:
+          net-id: "{{net_id}}"
+        block_migration: false
+      context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          {{ unlimited_neutron() }}
+          {{ unlimited_nova() }}
+      runner:
+        {{ constant_runner(concurrency=min(50, 2*controllers_amount), times=17*controllers_amount, is_smoke=smoke) }}
+      sla:
+        {{ no_failures_sla() }}
+
+
+  NovaServers.boot_server_from_volume_and_delete:
+    -
+      args:
+        {{vm_params(image_name, flavor_name) }}
+        nics:
+          net-id: "{{net_id}}"
+        volume_size: 1
+        volume_type: "ceph" #TODO: replace with a correct volume type
+      context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          {{ unlimited_volumes() }}
+          {{ unlimited_nova() }}
+      runner:
+        {{ constant_runner(concurrency=min(50, 2*controllers_amount), times=17*controllers_amount, is_smoke=smo$
+    sla:
+      {{ no_failures_sla() }}
+
+  NovaServers.boot_server_from_volume_and_delete:
+    -
+      args:
+        {{vm_params(image_name, flavor_name) }}
+        nics:
+          net-id: "{{net_id}}"
+        volume_size: 1  
+        volume_type: "netapp" #TODO: replace with a correct volume type
+      context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          {{ unlimited_volumes() }}
+          {{ unlimited_nova() }}  
+      runner:
+        {{ constant_runner(concurrency=min(50, 2*controllers_amount), times=17*controllers_amount, is_smoke=smo$
+      sla:
+        {{ no_failures_sla() }}
+
+  CinderVolumes.create_and_attach_volume:
+    -
+      args:
+        size: 1
+        image:
+          name: "{{image_name}}"
+        flavor:
+          name "{{flavor_name}}"
+        nics:
+          net-id: "{{net_id}}"
+        create_volume_params:
+          volume_type: "ceph" #TODO: replace with a correct volume type
+      context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          {{ unlimited_volumes() }}
+          {{ unlimited_nova() }}  
+      runner:
+        {{ constant_runner(concurrency=min(50, 2*controllers_amount), times=17*controllers_amount, is_smoke=smo$
+      sla:
+        {{ no_failures_sla() }}
+
+  CinderVolumes.create_and_attach_volume:
+    -
+      args:
+        size: 1
+        image:
+          name: "{{image_name}}"
+        flavor:
+          name "{{flavor_name}}"
+        nics:
+          net-id: "{{net_id}}"
+        create_volume_params:
+          volume_type: "netapp" #TODO: replace with a correct volume type
+      context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          {{ unlimited_volumes() }}
+          {{ unlimited_nova() }}
+      runner:
+        {{ constant_runner(concurrency=min(50, 2*controllers_amount), times=17*controllers_amount, is_smoke=smo$
+      sla:
+        {{ no_failures_sla() }}
+
+  NeutronNetworks.create_and_delete_networks:
+    - 
+      args:
+        network_create_args: {}
+     context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          {{ unlimited_neutron() }}
+      runner:
+        {{ constant_runner(concurrency=min(50, 4*controllers_amount), times=100*controllers_amount, is_smoke=s$
+      sla:
+        {{ no_failures_sla() }}
+
+  NeutronNetworks.create_and_delete_routers:
+    -
+      args:
+        network_create_args: {}
+        subnet_create_args: {}
+        subnet_cidr_start: "1.1.0.0/30"
+        subnets_per_network: 2
+        router_create_args: {}
+     context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+        quotas:
+          {{ unlimited_neutron() }}
+      runner:
+        {{ constant_runner(concurrency=min(50, 4*controllers_amount), times=100*controllers_amount, is_smoke=$
+      sla:
+        {{ no_failures_sla() }}
+
+  KeystoneBasic.create_user_update_password:
+    -
+      args: {}
+     context:
+        {% call user_context(tenants_amount, users_amount, use_existing_users) %}
+      runner:
+        {{ constant_runner(concurrency=min(50, 4*controllers_amount), times=500*controllers_amount, is_smoke=$
+      sla:
+        {{ no_failures_sla() }}
+         
